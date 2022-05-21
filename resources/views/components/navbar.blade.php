@@ -8,7 +8,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="mb-2 navbar-nav me-auto mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Program</a>
         </li>
@@ -22,14 +22,36 @@
           <a class="nav-link" href="#">Business</a>
         </li>
       </ul>
-      <div class="d-flex">
-        <a href="{{ route('login') }}" class="btn btn-master btn-secondary me-3">
-          Sign In
-        </a>
-        <a href="{{ route('login') }}" class="btn btn-master btn-primary">
-          Sign Up
-        </a>
-      </div>
+      @auth
+        <div class="d-flex user-logged nav-item dropdown no-arrow">
+          <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            Halo, {{ Auth::user()->name }}!
+            <img src="{{ Auth::user()->avatar }}" class="user-photo" alt="">
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="right: 0; left: auto">
+              <li>
+                <a class="dropdown-item" href="#">My Dashboard</a>
+                {{-- <a class="dropdown-item" href="{{ route('profile.show', Auth::user()->id) }}">My Dashboard</a> --}}
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  onclick="event.preventDefault(); document.getElementById('logout-form').submit()">Sign Out</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none">
+                  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                </form>
+              </li>
+            </ul>
+          </a>
+        </div>
+      @else
+        <div class="d-flex">
+          <a href="{{ route('login') }}" class="btn btn-master btn-secondary me-3">
+            Sign In
+          </a>
+          <a href="{{ route('login') }}" class="btn btn-master btn-primary">
+            Sign Up
+          </a>
+        </div>
+      @endauth
     </div>
   </div>
 </nav>
